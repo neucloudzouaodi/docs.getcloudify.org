@@ -7,7 +7,7 @@ weight: 1200
 
 ---
 
-`policies` provide a way of configuring reusable behavior by referecing [groups]({{< relref "blueprints/spec-groups.md" >}}) for which a policy applies.
+`policies` provide a way of configuring reusable behavior by referencing [groups]({{< relref "blueprints/spec-groups.md" >}}) for which a policy applies.
 
 {{% gsNote title="Note" %}}
 The top level `policies` section described in this page, should not be confused with policies defined in the top level `policy_types` and the `policies`
@@ -45,8 +45,8 @@ targets     | yes      | list        | A list of group names. The policy will be
 Keyname           | Required | Type     | Default   | Description
 -----------       | -------- | ----     | ---       | -----------
 default_instances | no       | integer  | 1         | The number of instances, the groups referenced by this policy will have.
-min_instances     | no       | integer  | 0         | The minimum number of allowed group instances. (Not enforced in scale workflow)
-max_instances     | no       | integer  | UNBOUNDED | The maximum number of allowed group instances. (Not enforced in scale workflow)
+min_instances     | no       | integer  | 0         | The minimum number of allowed group instances. (Not enforced by the `scale` workflow)
+max_instances     | no       | integer  | UNBOUNDED | The maximum number of allowed group instances. (Not enforced by the `scale` workflow)
 
 {{% gsNote title="Note" %}}
 `UNBOUNDED` may be used literally as the value for `max_instances`. Internally, it is stored as `-1`, which may also be used.

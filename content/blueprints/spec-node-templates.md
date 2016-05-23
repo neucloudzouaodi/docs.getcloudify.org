@@ -52,7 +52,7 @@ properties    | no       | dict          | The properties of the node template m
 instances     | no       | dict          | Instances configuration. (deprecated, replaced by `capabilities.scalable`)
 interfaces    | no       | interfaces    | Used for mapping plugins to [interfaces]({{< relref "blueprints/spec-interfaces.md" >}}) operation or for specifying inputs for already mapped node type operations.
 relationships | no       | relationships | Used for specifying the [relationships]({{< relref "blueprints/spec-relationships.md" >}}) this node template has with other node templates.
-capabilities  | no       | dict          | Used for specifying the node template capabilities (Supported since: [cloudify_dsl_1_3]({{< relref "blueprints/spec-versioning.md" >}}). At the moment only scalable cabalitily is supported)
+capabilities  | no       | dict          | Used for specifying the node template capabilities (Supported since: [cloudify_dsl_1_3]({{< relref "blueprints/spec-versioning.md" >}}). At the moment only scalable capability is supported)
 
 <br/>
 
@@ -110,15 +110,15 @@ node_templates:
 
 # capabilities.scalable Configuration
 
-The `The capabilities.scalable.properties` key is used for configuring the deployment characteristics of the node template.
+The `capabilities.scalable.properties` key is used for configuring the deployment characteristics of the node template.
 
 ## capabilities.scalable.properties Schema
 
 Keyname           | Required | Type     | Default   | Description
 -----------       | -------- | ----     | ---       | -----------
 default_instances | no       | integer  | 1         | The number of node-instances this node template will have.
-min_instances     | no       | integer  | 0         | The minimum number of allowed node instances. (Not enforced in scale workflow)
-max_instances     | no       | integer  | UNBOUNDED | The maximum number of allowed node instances. (Not enforced in scale workflow)
+min_instances     | no       | integer  | 0         | The minimum number of allowed node instances. (Not enforced by `scale` workflow)
+max_instances     | no       | integer  | UNBOUNDED | The maximum number of allowed node instances. (Not enforced by `scale` workflow)
 
 {{% gsNote title="Note" %}}
 `UNBOUNDED` may be used literally as the value for `max_instances`. Internally, it is stored as `-1`, which may also be used.
