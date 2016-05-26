@@ -1,0 +1,77 @@
+---
+layout: bt_wiki
+title: Scaling
+category: Blueprints
+draft: false
+weight: 1600
+
+---
+
+This page describes the different concepts involved in scaling different components of your application blueprint.
+
+## Overview
+When we refer to scaling, we are actually referring to the number of node instances each node template will have after deployment, and changes made
+to that number during runtime after the deployment is created, using the `scale` workflow.
+
+There are two ways of specifying this configuration in the application blueprint. We will show both and what will follow is an explanation of
+the difference between these two methods. 
+
+Then, we will show how the number of instances for different nodes may be changed during runtime.
+
+Finally, we will show some advanced methods that may be employed in complex scenarios.
+
+## Node Templates `scalable` Configuration
+One way to specify the initial number of instances a node template will have, is to configure the node template `capabilities.scalable` properties.
+
+For example, to configure some example vm node template so that it will be deployed with 5 initial instances, the following configuration may be used:
+
+{{< gsHighlight yaml >}}
+node_templates:
+  example_vm:
+    type: cloudify.nodes.Compute
+    capabilities:
+      scalable:
+        properties:
+          default_instances: 5
+{{< /gsHighlight >}}
+
+See [Node Templates]({{< relref "blueprints/spec-node-templates.md" >}}#capabilities-scalable-configuration) for more details.
+
+## Scaling Policy and Scaling Groups Configuration
+The second way to specify the initial number of instances a node template will have is to use scaling policies and groups. Usually, you would create
+configuration for multiple nodes in the same group but you can specify a group with a single member just as well. We'll see later how this can be useful.
+
+To configure a scaling group for a vm and an ip, the following configuration may be used:
+
+{{< gsHighlight yaml >}}
+node_templates:
+  example_vm:
+    type: cloudify.nodes.Compute
+  example_ip:
+    type: cloudify.nodes.VirtualIP
+
+groups:
+  vm_and_ip:
+    members: [vm, ip]
+
+policies:
+  scale_policy1:
+    type: cloudify.policies.scaling
+    properties:
+      default_instances: 5
+    targets: [vm_and_ip]    
+{{< /gsHighlight >}}
+
+When deployed, 5 vm node instances and 5 ip node instances will be created.
+
+See [Policies]({{< relref "blueprints/spec-policies.md" >}}) for more details.
+
+## Relationships connected_to/depends_on Semantics
+The previous example showed how
+
+## Scale Workflow
+TBD
+
+## Advanced
+nested groups
+
