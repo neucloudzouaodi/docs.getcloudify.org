@@ -31,14 +31,19 @@ As the fabric plugin is used for remote execution, the fact that it doesn't supp
 {{% /gsNote %}}
 
 
-## Execution Methods
+# Execution Methods
 
 There are 4 modes for working with this plugin.
 
 * Executing a list of `commands`.
 * Executing a Fabric task from a `tasks_file` included in the blueprint's directory.
 * Executing a Fabric task by specifying its path in the current python environment.
-* Executing a script by specifying the script's path or URL.
+* Executing a `script` by specifying the script's path or URL.
+
+## Executing commands or scripts with sudo
+
+Previously, to run `commands` or commands within a `script` using sudo, you had to explicitly write `sudo` where desired. Starting with fabric-plugin v1.4.1, The `commands` and `script` methods both accept a `use_sudo` input (which defaults to `false`). When true, the commands or script will be executed using sudo. This allows, for instance, to use the `sudo_prefix` fabric env property to run an alternative implementation of sudo. See below for examples on how to pass `use_sudo` and use the `sudo_prefix` property.
+
 
 # Running commands
 
@@ -58,6 +63,7 @@ node_templates:
                 - echo "source ~/myfile" >> ~/.bashrc
                 - apt-get install -y python-dev git
                 - pip install my_module
+              use_sudo: true
 {{< /gsHighlight >}}
 
 Here, we use the `run_commands` plugin task and specify a list of commands to execute on the agent host.
@@ -153,6 +159,7 @@ node_templates:
             # Path to the script relative to the blueprint directory
             script_path: scripts/start.sh
             MY_ENV_VAR: some-value
+            use_sudo: false
 {{< /gsHighlight >}}
 
 {{% gsNote title="Note" %}}
@@ -207,6 +214,7 @@ node_templates:
 
 
 # SSH configuration
+
 The fabric plugin will extract the correct host IP address based on the node's host. It will also use the username and key file path if they were set globally during the bootstrap process. However, it is possible to override these values and additional SSH configuration by passing `fabric_env` to operation inputs. This applies to `run_commands`, `run_task` and `run_module_task`. The `fabric_env` input is passed as is to the underlying [Fabric]({{< field "fabric_link" >}}/en/latest/usage/env.html) library, so check their documentation for additional details.
 
 
@@ -229,6 +237,7 @@ node_templates:
               host_string: 192.168.10.13
               user: some_username
               key_filename: /path/to/key/file
+              sudo_prefix: 'mysudo -c'
 {{< /gsHighlight >}}
 
 {{% gsTip title="Tip" %}}
