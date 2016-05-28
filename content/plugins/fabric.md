@@ -44,6 +44,9 @@ There are 4 modes for working with this plugin.
 
 Previously, to run `commands` or commands within a `script` using sudo, you had to explicitly write `sudo` where desired. Starting with fabric-plugin v1.4.1, The `commands` and `script` methods both accept a `use_sudo` input (which defaults to `false`). When true, the commands or script will be executed using sudo. This allows, for instance, to use the `sudo_prefix` fabric env property to run an alternative implementation of sudo. See below for examples on how to pass `use_sudo` and use the `sudo_prefix` property.
 
+## Hiding output
+
+Fabric outputs some information about its command execution. Starting with fabric-plugin v1.4.1 you can hide some of that output to maybe make your execution logs more readable or just ignore irrelevant data. To hide output, you can use the `hide` input to any of the four execution methods. The `hide` input is a list of types of outputs to hide as specified [here]({{< field "fabric_link" >}}/en/latest/usage/output_controls.html). See below for examples on how to pass the `hide` input.
 
 # Running commands
 
@@ -64,6 +67,9 @@ node_templates:
                 - apt-get install -y python-dev git
                 - pip install my_module
               use_sudo: true
+              hide:
+                - running
+                - warnings
 {{< /gsHighlight >}}
 
 Here, we use the `run_commands` plugin task and specify a list of commands to execute on the agent host.
